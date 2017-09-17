@@ -17,13 +17,32 @@ from PyQt5.QtWidgets import *
 import sys
 
 
+# Subclass QMainWindow to customise your application's main window
+class MainWindow(QMainWindow):
+    
+    # block for setups of MainWindow
+    def __init__(self, *args, **kwargs):
+        # When subclass a Qt class you must always call the super __init__ function to allow Qt to set up the objec
+        super(MainWindow, self).init(*args, **kwargs)
+        # change the title of MainWindow
+        self.setWindowTitle("My Awesome App")
+        # add the widget QLabel
+        label = QLabel("This is awesome!!!")
+        # place the widget in the middle of MainWindow
+        label.setAlignment(Qt.AlignCenter)
+        self.setCentralWidget(label)
+        
+
+
+
+
 # You need one (and only one) QApplication instance per application.
 # Pass in sys.argv to allow command line arguments for your app.
 # allows us to pass command line arguments to our application.
 app = QApplication(sys.argv)
 
-#create a window
-window = QMainWindow()
+#call MainWindow to create the window
+window = MainWindow()
 #show the window. Window are hidden by default.
 window.show
 
