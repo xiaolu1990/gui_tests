@@ -22,6 +22,11 @@ import sys
 # allows us to pass command line arguments to our application.
 app = QApplication(sys.argv)
 
+#create a window
+window = QMainWindow()
+#show the window. Window are hidden by default.
+window.show
+
 #start the event loop
 app.exec_()
 
