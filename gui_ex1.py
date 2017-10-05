@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
     # block for setups of MainWindow
     def __init__(self, *args, **kwargs):
         # When subclass a Qt class you must always call the super __init__ function to allow Qt to set up the objec
-        super(MainWindow, self).init(*args, **kwargs)
+        super(MainWindow, self).__init__(*args, **kwargs)
         # change the title of MainWindow
         self.setWindowTitle("My Awesome App")
         # add the widget QLabel
@@ -44,7 +44,7 @@ app = QApplication(sys.argv)
 #call MainWindow to create the window
 window = MainWindow()
 #show the window. Window are hidden by default.
-window.show
+window.show()
 
 #start the event loop
 app.exec_()
