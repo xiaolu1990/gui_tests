@@ -30,6 +30,11 @@ class Window(QMainWindow):
         openFile.setStatusTip("Open the file")
         openFile.triggered.connect(self.file_open)
 
+        saveFile = QAction("Save", self)
+        saveFile.setShortcut("Ctrl+S")
+        saveFile.setStatusTip("Save the file")
+        saveFile.triggered.connect(self.file_save)
+
         self.statusBar()
 
         mainMenu = self.menuBar()
@@ -39,6 +44,7 @@ class Window(QMainWindow):
         fileMenu = mainMenu.addMenu("File")
         fileMenu.addAction(extractAction)
         fileMenu.addAction(openFile)
+        fileMenu.addAction(saveFile)
 
         editMenu = mainMenu.addMenu("Edit")
         editMenu.addAction(editor)
@@ -140,6 +146,14 @@ class Window(QMainWindow):
         with file:
             text = file.read()
             self.textEditor.setText(text)
+
+    def file_save(self):
+        name, _ = QFileDialog.getSaveFileName(
+            self, "Save File", options=QFileDialog.DontUseNativeDialog)
+        file = open(name, "w")
+        text = self.textEditor.toPlainText()
+        file.write(text)
+        file.close()
 
     def close_application(self):
         choice = QMessageBox.question(
