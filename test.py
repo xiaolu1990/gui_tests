@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox
 from PyQt5.QtWidgets import QAction
-from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import *
 
 
@@ -39,16 +39,29 @@ class Window(QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractAction)
 
+        checkBox = QCheckBox("Enlarge Window", self)
+        checkBox.move(10, 40)
+        checkBox.stateChanged.connect(self.enlarge_window)
+        checkBox.toggle()
+
         self.show()
 
-    def close_application(self):
-        choice = QMessageBox.question(self, "Extract!", "Quit???", QMessageBox.Yes | QMessageBox.No)
-        if choice == QMessageBox.Yes:
-        	print ("quit application")
-        	sys.exit()
-        else:
-        	pass
 
+    def enlarge_window(self, state):
+    	if state == Qt.Checked:
+    		self.setGeometry(100, 100, 800, 800)
+    	else:
+    		self.setGeometry(100, 100, 400, 400)
+
+
+    def close_application(self):
+        choice = QMessageBox.question(
+            self, "Extract!", "Quit???", QMessageBox.Yes | QMessageBox.No)
+        if choice == QMessageBox.Yes:
+            print("quit application")
+            sys.exit()
+        else:
+            pass
 
 
 def run():
