@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox, QProgressBar
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import *
@@ -40,19 +40,31 @@ class Window(QMainWindow):
         self.toolBar.addAction(extractAction)
 
         checkBox = QCheckBox("Enlarge Window", self)
-        checkBox.move(10, 40)
+        checkBox.move(0, 40)
         checkBox.stateChanged.connect(self.enlarge_window)
         checkBox.toggle()
 
+        self.progress = QProgressBar(self)
+        self.progress.setGeometry(200, 100, 250, 20)
+
+        self.btn = QPushButton("Download", self)
+        self.btn.resize(self.btn.sizeHint())
+        self.btn.move(200, 120)
+        self.btn.clicked.connect(self.download)
+
         self.show()
 
+    def download(self):
+        self.completed = 0
+        while self.completed < 100:
+            self.completed += .01
+            self.progress.setValue(self.completed)
 
     def enlarge_window(self, state):
-    	if state == Qt.Checked:
-    		self.setGeometry(100, 100, 800, 800)
-    	else:
-    		self.setGeometry(100, 100, 400, 400)
-
+        if state == Qt.Checked:
+            self.setGeometry(100, 100, 800, 800)
+        else:
+            self.setGeometry(100, 100, 400, 400)
 
     def close_application(self):
         choice = QMessageBox.question(
