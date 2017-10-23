@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import *
@@ -14,7 +14,7 @@ class Window(QMainWindow):
         self.setWindowTitle("PyQt5")
 
         extractAction = QAction("Exit", self)
-        extractAction.setShortcut("Esc")
+        extractAction.setShortcut("Ctrl+X")
         extractAction.setStatusTip("Leave the App")
         extractAction.triggered.connect(self.close_application)
 
@@ -42,8 +42,13 @@ class Window(QMainWindow):
         self.show()
 
     def close_application(self):
-        print("Bye Bye")
-        sys.exit()
+        choice = QMessageBox.question(self, "Extract!", "Quit???", QMessageBox.Yes | QMessageBox.No)
+        if choice == QMessageBox.Yes:
+        	print ("quit application")
+        	sys.exit()
+        else:
+        	pass
+
 
 
 def run():
