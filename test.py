@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox, QProgressBar
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox,\
+    QProgressBar, QLabel, QComboBox, QStyleFactory
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import *
@@ -52,7 +53,27 @@ class Window(QMainWindow):
         self.btn.move(200, 120)
         self.btn.clicked.connect(self.download)
 
+        # create a text label that tells us which theme we currently use
+        self.styleChoice = QLabel("MacOS", self)
+        self.styleChoice.move(50, 150)
+
+        # make the drop down
+        comboBox = QComboBox(self)
+        comboBox.addItem("motif")
+        comboBox.addItem("Windows")
+        comboBox.addItem("cde")
+        comboBox.addItem("Plastique")
+        comboBox.move(50, 250)
+
+        # the combo box will take the string version of the choice, and run self.style_choice method
+        comboBox.activated[str].connect(self.style_choice)
+
         self.show()
+
+    def style_choice(self, text):
+        # changes our label text to say the current style choice
+        self.styleChoice.setText(text)
+        QApplication.setStyle(QStyleFactory.create(text))
 
     def download(self):
         self.completed = 0
@@ -76,10 +97,12 @@ class Window(QMainWindow):
             pass
 
 
-def run():
-    app = QApplication(sys.argv)
-    GUI = Window()
-    sys.exit(app.exec_())
+if __name__ == "__main__":
+
+    def run():
+        app = QApplication(sys.argv)
+        GUI = Window()
+        sys.exit(app.exec_())
 
 
 run()
