@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox,\
-    QProgressBar, QLabel, QComboBox, QStyleFactory, QFontDialog, QColorDialog, QCalendarWidget
+    QProgressBar, QLabel, QComboBox, QStyleFactory, QFontDialog, QColorDialog, QCalendarWidget, QTextEdit
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import *
@@ -19,13 +19,22 @@ class Window(QMainWindow):
         extractAction.setStatusTip("Leave the App")
         extractAction.triggered.connect(self.close_application)
 
+        editor = QAction("Edit", self)
+        editor.setShortcut("Ctrl+E")
+        editor.setStatusTip("Start editing")
+        editor.triggered.connect(self.edit)
+
         self.statusBar()
 
         mainMenu = self.menuBar()
         # show the menubar on MacOS looks like on Windows
         mainMenu.setNativeMenuBar(False)
+
         fileMenu = mainMenu.addMenu("File")
         fileMenu.addAction(extractAction)
+
+        editMenu = mainMenu.addMenu("Edit")
+        editMenu.addAction(editor)
 
         self.home()
 
@@ -52,7 +61,7 @@ class Window(QMainWindow):
         cal = QCalendarWidget(self)
         cal.move(300, 300)
         cal.resize(cal.sizeHint())
-        
+
         checkBox = QCheckBox("Enlarge Window", self)
         checkBox.move(0, 40)
         checkBox.stateChanged.connect(self.enlarge_window)
@@ -109,6 +118,10 @@ class Window(QMainWindow):
             self.setGeometry(100, 100, 800, 800)
         else:
             self.setGeometry(100, 100, 400, 400)
+
+    def edit(self):
+    	textEditor = QTextEdit("A custom Editor", self)
+    	self.setCentralWidget(textEditor)
 
     def close_application(self):
         choice = QMessageBox.question(
