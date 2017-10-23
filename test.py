@@ -21,7 +21,8 @@ class Window(QMainWindow):
         self.statusBar()
 
         mainMenu = self.menuBar()
-        mainMenu.setNativeMenuBar(False)	#show the menubar on MacOS looks like on Windows
+        # show the menubar on MacOS looks like on Windows
+        mainMenu.setNativeMenuBar(False)
         fileMenu = mainMenu.addMenu("File")
         fileMenu.addAction(extractAction)
 
@@ -32,6 +33,12 @@ class Window(QMainWindow):
         btn.clicked.connect(self.close_application)
         btn.resize(btn.sizeHint())  # automatically set the button size
         btn.move(100, 100)
+
+        extractAction = QAction("Flee the Screen", self)
+        extractAction.triggered.connect(self.close_application)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
         self.show()
 
     def close_application(self):
