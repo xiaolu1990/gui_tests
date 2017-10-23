@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox,\
-    QProgressBar, QLabel, QComboBox, QStyleFactory, QFontDialog, QColorDialog
+    QProgressBar, QLabel, QComboBox, QStyleFactory, QFontDialog, QColorDialog, QCalendarWidget
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import *
@@ -49,6 +49,10 @@ class Window(QMainWindow):
         fontColor.triggered.connect(self.color_choice)
         self.toolBar.addAction(fontColor)
 
+        cal = QCalendarWidget(self)
+        cal.move(300, 300)
+        cal.resize(cal.sizeHint())
+        
         checkBox = QCheckBox("Enlarge Window", self)
         checkBox.move(0, 40)
         checkBox.stateChanged.connect(self.enlarge_window)
@@ -80,8 +84,9 @@ class Window(QMainWindow):
         self.show()
 
     def color_choice(self):
-    	color = QColorDialog.getColor()
-    	self.styleChoice.setStyleSheet("QWidget {background-color:%s}" % color.name())
+        color = QColorDialog.getColor()
+        self.styleChoice.setStyleSheet(
+            "QWidget {background-color:%s}" % color.name())
 
     def font_choice(self):
         font, valid = QFontDialog.getFont()
