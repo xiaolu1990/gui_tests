@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox,\
-    QProgressBar, QLabel, QComboBox, QStyleFactory, QFontDialog, QColorDialog, QCalendarWidget, QTextEdit
+    QProgressBar, QLabel, QComboBox, QStyleFactory, QFontDialog,\
+    QColorDialog, QCalendarWidget, QTextEdit, QFileDialog
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import *
@@ -24,6 +25,11 @@ class Window(QMainWindow):
         editor.setStatusTip("Start editing")
         editor.triggered.connect(self.edit)
 
+        openFile = QAction("Open", self)
+        openFile.setShortcut("Ctrl+O")
+        openFile.setStatusTip("Open the file")
+        openFile.triggered.connect(self.file_open)
+
         self.statusBar()
 
         mainMenu = self.menuBar()
@@ -32,6 +38,7 @@ class Window(QMainWindow):
 
         fileMenu = mainMenu.addMenu("File")
         fileMenu.addAction(extractAction)
+        fileMenu.addAction(openFile)
 
         editMenu = mainMenu.addMenu("Edit")
         editMenu.addAction(editor)
@@ -120,8 +127,19 @@ class Window(QMainWindow):
             self.setGeometry(100, 100, 400, 400)
 
     def edit(self):
-    	textEditor = QTextEdit("A custom Editor", self)
-    	self.setCentralWidget(textEditor)
+        self.textEditor = QTextEdit("A custom editor", self)
+        self.setCentralWidget(self.textEditor)
+
+    def file_open(self):
+        name, _ = QFileDialog.getOpenFileName(
+            self, "Open File", options=QFileDialog.DontUseNativeDialog)
+        file = open(name, "r")
+        # call the text editor to come up
+        self.edit()
+        # care about the with method
+        with file:
+            text = file.read()
+            self.textEditor.setText(text)
 
     def close_application(self):
         choice = QMessageBox.question(
