@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QCheckBox,\
-    QProgressBar, QLabel, QComboBox, QStyleFactory
+    QProgressBar, QLabel, QComboBox, QStyleFactory, QFontDialog
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import *
@@ -40,6 +40,11 @@ class Window(QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractAction)
 
+        fontChoice = QAction("Font", self)
+        fontChoice.triggered.connect(self.font_choice)
+        #self.toolBar = self.addToolBar("Font")
+        self.toolBar.addAction(fontChoice)
+
         checkBox = QCheckBox("Enlarge Window", self)
         checkBox.move(0, 40)
         checkBox.stateChanged.connect(self.enlarge_window)
@@ -69,6 +74,11 @@ class Window(QMainWindow):
         comboBox.activated[str].connect(self.style_choice)
 
         self.show()
+
+    def font_choice(self):
+        font, valid = QFontDialog.getFont()
+        if valid:
+            self.styleChoice.setFont(font)
 
     def style_choice(self, text):
         # changes our label text to say the current style choice
